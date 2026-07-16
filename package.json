@@ -1,0 +1,15 @@
+{
+  "name": "shortcode-compliance-checker",
+  "version": "1.0.0",
+  "description": "Canadian Shortcode Compliance Checker — PDF review tool powered by Claude AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["cwta", "casl", "shortcode", "compliance", "canada", "sms"],
+  "license": "MIT"
+}
