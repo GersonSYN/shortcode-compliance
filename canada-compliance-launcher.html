@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Canadian Shortcode Compliance Review</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F6F5F2;--surface:#FFF;--surface-alt:#F0EFEC;--border:#E3E1DA;--border-strong:#C8C6BF;
+  --text:#1C1B18;--text-2:#5A5854;--text-3:#9A9892;
+  --accent:#1B4ED8;--accent-light:#EEF2FF;--accent-border:#C7D2FE;
+  --danger:#B91C1C;--danger-bg:#FEF2F2;--danger-border:#FECACA;
+  --success:#065F46;--success-bg:#ECFDF5;--success-border:#6EE7B7;
+  --warn:#92400E;--warn-bg:#FFFBEB;--warn-border:#FDE68A;
+  --radius:8px;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
+
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:50;}
+.header-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;}
+.logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;letter-spacing:-.015em;}
+.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;}
+.badge{font-size:11px;font-weight:500;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-border);border-radius:20px;padding:2px 10px;}
+
+.main{max-width:700px;margin:0 auto;padding:2.5rem 2rem 4rem;}
+.hero{margin-bottom:2rem;}
+.hero h1{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;}
+.hero p{font-size:14px;color:var(--text-2);line-height:1.65;max-width:560px;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.tag{font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2px 9px;color:var(--text-2);}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.card-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-bottom:.875rem;display:flex;align-items:center;gap:6px;}
+.card-label-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);}
+
+/* Upload */
+.upload-zone{border:2px dashed var(--border-strong);border-radius:10px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;position:relative;}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--accent-light);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{width:44px;height:44px;background:var(--surface-alt);border-radius:9px;display:grid;place-items:center;margin:0 auto .875rem;border:1px solid var(--border);}
+.upload-title{font-size:14px;font-weight:600;margin-bottom:3px;}
+.upload-sub{font-size:12.5px;color:var(--text-2);}
+.upload-types{font-size:11.5px;color:var(--text-3);margin-top:6px;}
+
+.file-selected{display:none;align-items:center;gap:10px;padding:.875rem 1rem;background:var(--success-bg);border:1px solid var(--success-border);border-radius:var(--radius);margin-top:.75rem;}
+.file-selected.show{display:flex;}
+.file-icon{width:34px;height:34px;background:white;border:1px solid var(--success-border);border-radius:5px;display:grid;place-items:center;flex-shrink:0;}
+.file-name{font-size:13px;font-weight:500;color:var(--success);}
+.file-size{font-size:11.5px;color:var(--success);opacity:.8;}
+.remove-file{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--success);opacity:.6;padding:3px;border-radius:4px;}
+.remove-file:hover{opacity:1;}
+
+/* Scope */
+.scope-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px;}
+.scope-item{display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:border-color .1s,background .1s;}
+.scope-item:hover{border-color:var(--border-strong);background:var(--bg);}
+.scope-item input{accent-color:var(--accent);width:14px;height:14px;flex-shrink:0;cursor:pointer;}
+.scope-item label{font-size:12.5px;cursor:pointer;line-height:1.3;}
+textarea{width:100%;font-family:var(--sans);font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:var(--radius);padding:9px 11px;resize:vertical;min-height:70px;outline:none;line-height:1.6;}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);}
+
+/* Steps */
+.steps{display:flex;gap:0;margin-bottom:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.step{flex:1;padding:.875rem 1rem;text-align:center;border-right:1px solid var(--border);position:relative;}
+.step:last-child{border-right:none;}
+.step.active{background:var(--accent-light);}
+.step.done{background:var(--success-bg);}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--surface-alt);border:1px solid var(--border);font-size:11px;font-weight:700;display:grid;place-items:center;margin:0 auto 4px;}
+.step.active .step-num{background:var(--accent);color:white;border-color:var(--accent);}
+.step.done .step-num{background:var(--success);color:white;border-color:var(--success);}
+.step-label{font-size:11px;color:var(--text-3);font-weight:500;}
+.step.active .step-label{color:var(--accent);}
+.step.done .step-label{color:var(--success);}
+
+/* Buttons */
+.submit-btn{width:100%;padding:13px;background:var(--accent);color:white;border:none;border-radius:var(--radius);font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-.01em;transition:background .15s;}
+.submit-btn:hover:not(:disabled){background:#1640b0;}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+.copy-btn{width:100%;padding:11px;background:var(--surface);color:var(--accent);border:1.5px solid var(--accent);border-radius:var(--radius);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s;margin-top:.75rem;}
+.copy-btn:hover{background:var(--accent-light);}
+.copy-btn.copied{background:var(--success-bg);color:var(--success);border-color:var(--success);}
+
+.error{background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius);padding:10px 13px;font-size:13px;color:var(--danger);display:none;margin-top:.75rem;line-height:1.5;}
+
+/* Step 2 panel */
+#step2Panel{display:none;}
+.instruction-box{background:var(--accent-light);border:1px solid var(--accent-border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;}
+.instruction-box h3{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:.75rem;display:flex;align-items:center;gap:7px;}
+.instruction-steps{list-style:none;counter-reset:istep;}
+.instruction-steps li{counter-increment:istep;display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--accent-border);font-size:13.5px;color:var(--text-2);line-height:1.5;}
+.instruction-steps li:last-child{border-bottom:none;padding-bottom:0;}
+.instruction-steps li::before{content:counter(istep);width:20px;height:20px;background:var(--accent);color:white;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.instruction-steps li strong{color:var(--text);font-weight:600;}
+
+.prompt-box{background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;font-size:12.5px;color:var(--text-2);line-height:1.7;max-height:200px;overflow-y:auto;font-family:inherit;white-space:pre-wrap;margin-top:.5rem;}
+
+.open-claude-btn{width:100%;padding:13px;background:#D97706;color:white;border:none;border-radius:var(--radius);font-family:var(--sans);font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-.01em;transition:background .15s;text-decoration:none;}
+.open-claude-btn:hover{background:#B45309;}
+
+.reset-btn{width:100%;padding:10px;background:var(--surface);color:var(--text-2);border:1px solid var(--border-strong);border-radius:var(--radius);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:.75rem;transition:background .15s;}
+.reset-btn:hover{background:var(--bg);}
+
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem;font-size:13px;color:var(--warn);line-height:1.6;}
+.warn-box strong{font-weight:600;}
+
+.footer{border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:11.5px;color:var(--text-3);margin-top:2rem;}
+.footer a{color:var(--accent);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      Shortcode Compliance
+    </div>
+    <span class="badge">Uses Claude.ai</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="hero">
+    <h1>Canadian shortcode compliance review</h1>
+    <p>Upload your shortcode application PDF and we'll prepare everything for Claude.ai to review it — using your existing Syniverse Claude license. No extra costs, no API key needed.</p>
+    <div class="tags">
+      <span class="tag">CWTA Shortcode Guidelines</span>
+      <span class="tag">CASL S.C. 2010 c.23</span>
+      <span class="tag">CRTC Anti-Spam</span>
+      <span class="tag">Quebec / ARRET</span>
+      <span class="tag">Carrier Provisioning</span>
+    </div>
+  </div>
+
+  <!-- Progress steps -->
+  <div class="steps">
+    <div class="step active" id="s1"><div class="step-num">1</div><div class="step-label">Upload PDF</div></div>
+    <div class="step" id="s2"><div class="step-num">2</div><div class="step-label">Copy prompt</div></div>
+    <div class="step" id="s3"><div class="step-num">3</div><div class="step-label">Open Claude.ai</div></div>
+    <div class="step" id="s4"><div class="step-num">4</div><div class="step-label">Get report</div></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div id="step1Panel">
+
+    <div class="card">
+      <div class="card-label"><span class="card-label-dot"></span>Step 1 — Upload your PDF</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".pdf,application/pdf"/>
+        <div class="upload-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="upload-title">Drop your PDF here or click to browse</div>
+        <div class="upload-sub">Shortcode application, program brief, or carrier submission form</div>
+        <div class="upload-types">PDF only · Max 10 MB</div>
+      </div>
+      <div class="file-selected" id="fileSelected">
+        <div class="file-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div><div class="file-name" id="fileName">—</div><div class="file-size" id="fileSize">—</div></div>
+        <button class="remove-file" onclick="clearFile()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span class="card-label-dot"></span>Review scope</div>
+      <div class="scope-grid">
+        <div class="scope-item"><input type="checkbox" id="s1c" checked/><label for="s1c">Consent &amp; opt-in</label></div>
+        <div class="scope-item"><input type="checkbox" id="s2c" checked/><label for="s2c">Opt-out handling</label></div>
+        <div class="scope-item"><input type="checkbox" id="s3c" checked/><label for="s3c">Message disclosures</label></div>
+        <div class="scope-item"><input type="checkbox" id="s4c" checked/><label for="s4c">CASL compliance</label></div>
+        <div class="scope-item"><input type="checkbox" id="s5c" checked/><label for="s5c">Shortcode format</label></div>
+        <div class="scope-item"><input type="checkbox" id="s6c" checked/><label for="s6c">Quebec / French</label></div>
+        <div class="scope-item"><input type="checkbox" id="s7c" checked/><label for="s7c">Privacy &amp; data</label></div>
+        <div class="scope-item"><input type="checkbox" id="s8c" checked/><label for="s8c">Carrier provisioning</label></div>
+      </div>
+      <div style="margin-top:.875rem;">
+        <div class="card-label" style="margin-bottom:7px;"><span class="card-label-dot"></span>Additional context <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11.5px;color:var(--text-3)">(optional)</span></div>
+        <textarea id="context" placeholder="e.g. Renewal for shortcode 55555, Ontario only, marketing program…"></textarea>
+      </div>
+    </div>
+
+    <div class="error" id="errorBox"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="prepareReview()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      Prepare compliance review
+    </button>
+
+  </div>
+
+  <!-- Step 2 -->
+  <div id="step2Panel">
+
+    <div class="warn-box">
+      <strong>Your PDF is ready.</strong> Follow the 3 steps below to get your compliance report using Claude.ai — your existing Syniverse license covers this completely.
+    </div>
+
+    <div class="instruction-box">
+      <h3>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        How to get your report
+      </h3>
+      <ol class="instruction-steps">
+        <li><strong>Copy the prompt below</strong> — click the blue "Copy prompt" button</li>
+        <li><strong>Open Claude.ai</strong> — click the orange button, it opens in a new tab</li>
+        <li><strong>Paste the prompt</strong> — press Ctrl+V in the Claude.ai message box</li>
+        <li><strong>Attach your PDF</strong> — click the 📎 paperclip icon and select <span id="attachFileName" style="font-weight:600;color:var(--text)">your file</span></li>
+        <li><strong>Send</strong> — press Enter or click the send button and wait for the full report</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-label"><span class="card-label-dot"></span>Your compliance review prompt</div>
+      <div class="prompt-box" id="promptBox"></div>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy prompt to clipboard
+      </button>
+    </div>
+
+    <a class="open-claude-btn" href="https://claude.ai" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Open Claude.ai →
+    </a>
+
+    <button class="reset-btn" onclick="resetAll()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+      Review another PDF
+    </button>
+
+  </div>
+
+</main>
+
+<footer class="footer">
+  References: <a href="https://www.cwta.ca/initiatives/short-codes/" target="_blank">CWTA Guidelines</a> · <a href="https://laws-lois.justice.gc.ca/eng/acts/E-1.6/" target="_blank">CASL</a> · <a href="https://crtc.gc.ca/eng/internet/anti.htm" target="_blank">CRTC</a><br/>
+  Guidance only — not legal advice. No data is stored or transmitted by this page.
+</footer>
+
+<script>
+let selectedFile = null;
+
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+document.getElementById('fileInput').addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+function handleFile(f) {
+  if (!f.name.toLowerCase().endsWith('.pdf') && f.type !== 'application/pdf') { showError('Please upload a PDF file.'); return; }
+  if (f.size > 10 * 1024 * 1024) { showError('File too large. Max 10 MB.'); return; }
+  selectedFile = f;
+  document.getElementById('fileName').textContent = f.name;
+  document.getElementById('fileSize').textContent = fmt(f.size);
+  document.getElementById('fileSelected').classList.add('show');
+  hideError();
+}
+
+function clearFile() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileSelected').classList.remove('show');
+}
+
+function fmt(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(2) + ' MB';
+}
+
+function getScope() {
+  const labels = ['Consent & opt-in', 'Opt-out handling', 'Message disclosures', 'CASL compliance', 'Shortcode format', 'Quebec / French requirements', 'Privacy & data retention', 'Carrier provisioning'];
+  return labels.filter((_, i) => document.getElementById('s' + (i + 1) + 'c').checked);
+}
+
+function showError(m) { const b = document.getElementById('errorBox'); b.textContent = m; b.style.display = 'block'; }
+function hideError() { document.getElementById('errorBox').style.display = 'none'; }
+
+function buildPrompt() {
+  const scope = getScope();
+  const context = document.getElementById('context').value.trim();
+  const fileName = selectedFile ? selectedFile.name : 'the attached PDF';
+
+  return `Please review the attached Canadian shortcode application PDF ("${fileName}") for full compliance against CWTA (Canadian Wireless Telecommunications Association) shortcode guidelines and CASL (Canada's Anti-Spam Legislation, S.C. 2010, c. 23).
+
+Review scope: ${scope.join(', ')}.${context ? '\n\nAdditional context: ' + context : ''}
+
+For each area please provide:
+• ✅ Pass / ⚠️ Warning / ❌ Fail status
+• What you found in the document (quote the text where relevant)
+• Specific fix required, citing the regulation (e.g. CWTA s.4.2, CASL s.6(2)(a))
+
+Areas to check:
+1. Shortcode format — is it 5 or 6 numeric digits?
+2. Consent & opt-in — double opt-in, express written consent, program name identified, message frequency disclosed, consent records stored
+3. Opt-out handling — all keywords handled (STOP, ARRET, END, QUIT, CANCEL, UNSUBSCRIBE), opt-out confirmation sent immediately, suppression within 10 business days
+4. Message disclosures — STOP instruction in messages, HELP keyword configured, "Msg & data rates may apply" included
+5. CASL compliance — sender clearly identified, express consent documented, valid unsubscribe mechanism
+6. Quebec / French requirements — ARRET keyword supported for French-language opt-out
+7. Privacy & data retention — privacy policy linked, data retention documented, no unauthorized data sharing
+8. Carrier provisioning — program ready for carrier submission
+
+At the end please provide:
+• Overall compliance score (0-100)
+• Verdict: Compliant / Mostly Compliant / Needs Work / Non-Compliant
+• Carrier readiness: Ready for submission / Minor revisions needed / Major revisions required / Not ready
+• CASL exposure level: Low / Medium / High / Critical
+• Top 3 priority actions to fix before submission`;
+}
+
+function prepareReview() {
+  hideError();
+  if (!selectedFile) { showError('Please upload a PDF file first.'); return; }
+  const scope = getScope();
+  if (!scope.length) { showError('Please select at least one review area.'); return; }
+
+  const prompt = buildPrompt();
+  document.getElementById('promptBox').textContent = prompt;
+  document.getElementById('attachFileName').textContent = selectedFile.name;
+
+  // Update steps
+  document.getElementById('s1').classList.remove('active');
+  document.getElementById('s1').classList.add('done');
+  document.getElementById('s2').classList.add('active');
+  document.getElementById('s3').classList.add('active');
+  document.getElementById('s4').classList.add('active');
+
+  document.getElementById('step1Panel').style.display = 'none';
+  document.getElementById('step2Panel').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyPrompt() {
+  const prompt = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(prompt).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy prompt to clipboard`;
+    }, 2500);
+  }).catch(() => {
+    // Fallback for browsers that block clipboard
+    const ta = document.createElement('textarea');
+    ta.value = prompt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy prompt to clipboard`;
+    }, 2500);
+  });
+}
+
+function resetAll() {
+  clearFile();
+  document.getElementById('context').value = '';
+  document.getElementById('step1Panel').style.display = 'block';
+  document.getElementById('step2Panel').style.display = 'none';
+  ['s1','s2','s3','s4'].forEach(id => {
+    document.getElementById(id).classList.remove('active','done');
+  });
+  document.getElementById('s1').classList.add('active');
+  hideError();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
